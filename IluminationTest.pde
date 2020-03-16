@@ -1,41 +1,69 @@
-Sphere prueba;
-
-PVector previousColor;
-
 int sphereDetail = 60;
+PShape eye;
+PShape rose;
+PShape skull;
 
-void setup(){
+void setup() {
   size(1280, 720, P3D);
-  previousColor = new PVector(random(255),random(255),random(255));
   sphereDetail(sphereDetail);
-  
-  prueba = new Sphere();
+  lights();
+  loadModels();
 }
 
 
-void draw(){
-  if (mousePressed){
+void draw() {
+  drawSkull();
+  drawEyes();
+  drawRose();
+    
+}
+
+void control() {
+  if (mousePressed) {
     alternativeLights();
-  }
-  else{
+  } else {
     lights();
   }
-  
-  prueba.draw(new PVector(width/2, height/2, 0));
-  
 }
 
-void alternativeLights(){
-  PVector colorVec = getRandomColor();
-  float val=(float)mouseX/(float)width*(float)255;
-  ambientLight((int)val*colorVec.x,(int)val*colorVec.y,(int)val*colorVec.z);
-  //directionalLight(50, 200, 50, -1, 0, 0);
-  //spotLight(204, 153, 0, mouseX, mouseY, 500, 0, 0, -1, PI/2, 600);
+void loadModels(){
+  eye = loadShape("assets/eye/eyeball.obj");
+  rose = loadShape("assets/rose_alt/rose.obj");
+  rose.rotateX(radians(90));
+  rose.rotate(radians(-90), 0, 0, 1);
+  skull = loadShape("assets/skull/skull.obj");
+  skull.rotateX(radians(90));
 }
 
-PVector getRandomColor(){
-  previousColor.x *= random(0.9,1.1); 
-  previousColor.y *= random(0.9,1.1); 
-  previousColor.z *= random(0.9,1.1); 
-  return  previousColor;
+void drawEyes(){
+  pushMatrix();
+  translate(width/3+150, height/2);
+  scale(20, 20, 20);
+  shape(eye);
+  popMatrix();
+
+  pushMatrix();
+  translate(2*width/3-150, height/2);
+  scale(20, 20, 20);
+  shape(eye);
+  popMatrix();
+}
+
+void drawRose(){
+  pushMatrix();
+  translate(width/2+250, height/2);
+  scale(8, 8, 8);  
+  shape(rose);
+  popMatrix();
+}
+
+void drawSkull(){
+  pushMatrix();
+  translate(width/2, height/2+250, -250);
+  scale(8, 8, 8);  
+  shape(skull);
+  popMatrix();
+}
+
+void alternativeLights() {
 }
